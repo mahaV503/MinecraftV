@@ -14,9 +14,7 @@ public class GraphicUI extends JFrame{
         Land board = new Land();
         this.setContentPane(board);
 
-        Move cMove= new Move();
-        this.addMouseListener(1);
-    }
+        }
 
     private void addMouseListener(int i) {
     }
