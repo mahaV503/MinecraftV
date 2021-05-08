@@ -33,7 +33,7 @@ public class GraphicUIvar extends JPanel {
 
     private int allCells;
 
-    public void setIMGS(Image[] imgVar) {
+    public Image[] setIMGS(Image[] imgVar) {
         imgVar = new Image[NUM_IMAGES];
 
         for (int i = 0; i < NUM_IMAGES; i++) {
@@ -41,15 +41,16 @@ public class GraphicUIvar extends JPanel {
             var path = "src/resources/" + i + ".png";
             imgVar[i] = (new ImageIcon(path)).getImage();
         }
-
+        return imgVar;
     }
-    public void setField(int[] fieldVar){
+    public int[] setField(int[] fieldVar){
         fieldVar = new int[allCells];
 
         for (int i = 0; i < allCells; i++) {
 
             fieldVar[i] = COVER_FOR_CELL;
         }
+        return fieldVar;
     }
 
     public void emptyFILLS(int[] fieldVar_){
@@ -59,7 +60,8 @@ public class GraphicUIvar extends JPanel {
         while (i <  N_MINES) {
 
             int position = (int) (allCells * random.nextDouble());
-
+            System.out.println(fieldVar_);
+                    System.out.println(allCells);
             if ((position < allCells)
                     && (fieldVar_[position] != COVERED_MINE_CELL)) {
 
