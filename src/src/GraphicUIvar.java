@@ -5,7 +5,6 @@ public class GraphicUIvar extends JPanel {
 
     private final int NUM_IMAGES = 13;
     private final int CELL_SIZE = 15;
-
     private final int COVER_FOR_CELL = 10;
     private final int MARK_FOR_CELL = 10;
     private final int EMPTY_CELL = 0;
@@ -27,23 +26,23 @@ public class GraphicUIvar extends JPanel {
 
 
     private boolean inGame;
-
+    private int[] fieldVar;
     private int minesLeft;
-
+    private Image[] imgVar;
 
     private int allCells;
 
-    public Image[] setIMGS(Image[] imgVar) {
+    public Image[] setIMGS() {
         imgVar = new Image[NUM_IMAGES];
 
         for (int i = 0; i < NUM_IMAGES; i++) {
 
-            var path = "src/resources/" + i + ".png";
+            var path = "src/minesweepertiles/" + i + ".png";
             imgVar[i] = (new ImageIcon(path)).getImage();
         }
         return imgVar;
     }
-    public int[] setField(int[] fieldVar){
+    public int[] setField(){
         fieldVar = new int[allCells];
 
         for (int i = 0; i < allCells; i++) {
@@ -53,15 +52,15 @@ public class GraphicUIvar extends JPanel {
         return fieldVar;
     }
 
-    public void emptyFILLS(int[] fieldVar_){
+    public int[] emptyFILLS(int[] fieldVar_){
         int i=0;
         int cell;
         var random = new Random();
         while (i <  N_MINES) {
 
             int position = (int) (allCells * random.nextDouble());
-            System.out.println(fieldVar_);
-                    System.out.println(allCells);
+            //System.out.println(fieldVar_);
+                    //System.out.println(allCells);
             if ((position < allCells)
                     && (fieldVar_[position] != COVERED_MINE_CELL)) {
 
@@ -127,6 +126,7 @@ public class GraphicUIvar extends JPanel {
                 }
             }
         }
+        return fieldVar_;
     }
 
 

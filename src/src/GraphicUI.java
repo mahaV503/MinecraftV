@@ -1,48 +1,47 @@
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 
 public class GraphicUI extends JPanel {
 
     GraphicUIvar variables = new GraphicUIvar();
     private Image[] img;
+    private int[] field_;
     private int[] field;
     private final JLabel statusbar;
+    private final JLabel timebar_;
 
-    public GraphicUI(JLabel statusbar) {
+    public GraphicUI(JLabel statusbar,JLabel timebar_) {
 
         this.statusbar = statusbar;
-        initBoard();
+        this.timebar_=timebar_;
+        initGraphicUI();
     }
 
-    private void initBoard() {
+    private void initGraphicUI() {
 
         setPreferredSize(new Dimension(variables.getBOARD_WIDTH(), variables.getBOARD_HEIGHT()));
 
-        img=variables.setIMGS(img);
-        field= variables.setField(field);
+        img=variables.setIMGS();
+        field_= variables.setField();
         addMouseListener(new MinesAdapter());
         newGame();
     }
 
     private void newGame() {
-
+        timebar_.setText("Time Remaining: ");
         variables.setInGame(true);
         variables.setMinesLeft(variables.getN_MINES());
         variables.setAllCells(variables.getN_COLS()*variables.getN_COLS());
-        variables.setField(field);
+        variables.setField();
         statusbar.setText(Integer.toString(variables.getMinesLeft()));
-        field=variables.setField(field);
-        variables.emptyFILLS(field);
+        field_=variables.setField();
+        field=variables.emptyFILLS(field_);
+        System.out.println(field.length);
         //While func
 
     }
