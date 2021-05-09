@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 
-public class GraphicUI extends JPanel {
+public class GraphicUI extends JPanel{
 
     GraphicUIvar variables = new GraphicUIvar();
     private Image[] img;
@@ -14,7 +14,8 @@ public class GraphicUI extends JPanel {
     private int[] field;
     private final JLabel statusbar;
     private final JLabel timebar_;
-
+    private long createdMillis;
+    private Thread runThread;
     public GraphicUI(JLabel statusbar,JLabel timebar_) {
 
         this.statusbar = statusbar;
@@ -32,8 +33,33 @@ public class GraphicUI extends JPanel {
         newGame();
     }
 
+
+
+    public int stopTime(){
+        long nowMillis = System.currentTimeMillis();
+        int diffT=(int)((nowMillis - this.createdMillis) / 1000);
+        //System.out.println(1000-diffT);
+        return diffT;
+
+    }
     private void newGame() {
-        timebar_.setText("Time Remaining: ");
+        createdMillis = System.currentTimeMillis();
+        Thread t = new Thread() {
+            public void run() {
+                while(stopTime()<1000){
+                    timebar_.setText("Time Remaining: "+(1000-stopTime()));
+                    //System.out.println(stopTime());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        t.start();
+        System.out.println(createdMillis);
+
         variables.setInGame(true);
         variables.setMinesLeft(variables.getN_MINES());
         variables.setAllCells(variables.getN_COLS()*variables.getN_COLS());
@@ -42,6 +68,7 @@ public class GraphicUI extends JPanel {
         field_=variables.setField();
         field=variables.emptyFILLS(field_);
         System.out.println(field.length);
+
         //While func
 
     }

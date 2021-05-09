@@ -13,7 +13,7 @@ public class timerSt {
     public static void main(String[] args) throws InterruptedException {
         timerSt t=new timerSt();
         while(t.stopTime()<1000){
-            //System.out.println(t.stopTime());
+            System.out.println(t.stopTime());
             Thread.sleep(1000);
         }
     }

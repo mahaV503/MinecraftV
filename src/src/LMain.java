@@ -58,6 +58,7 @@ public class LMain extends JFrame {
         EventQueue.invokeLater(() -> {
 
             var ex = new LMain();
+
             ex.setVisible(true);
         });
     }
