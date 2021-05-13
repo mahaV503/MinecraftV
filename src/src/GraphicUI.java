@@ -15,11 +15,14 @@ public class GraphicUI extends JPanel{
     private final JLabel statusbar;
     private final JLabel timebar_;
     private long createdMillis;
-    private Thread runThread;
+    boolean exitTime=true;
+    Thread t;
+    int time=1000;
     public GraphicUI(JLabel statusbar,JLabel timebar_) {
 
         this.statusbar = statusbar;
         this.timebar_=timebar_;
+
         initGraphicUI();
     }
 
@@ -42,12 +45,14 @@ public class GraphicUI extends JPanel{
         return diffT;
 
     }
+
     private void newGame() {
         createdMillis = System.currentTimeMillis();
-        Thread t = new Thread() {
+        t = new Thread() {
             public void run() {
-                while(stopTime()<1000){
-                    timebar_.setText("Time Remaining: "+(1000-stopTime()));
+
+                while(stopTime()<time && exitTime){
+                    timebar_.setText("Time Remaining: "+(time-stopTime()));
                     //System.out.println(stopTime());
                     try {
                         Thread.sleep(1000);
@@ -58,7 +63,7 @@ public class GraphicUI extends JPanel{
             }
         };
         t.start();
-        System.out.println(createdMillis);
+        //System.out.println(createdMillis);
 
         variables.setInGame(true);
         variables.setMinesLeft(variables.getN_MINES());
@@ -67,7 +72,7 @@ public class GraphicUI extends JPanel{
         statusbar.setText(Integer.toString(variables.getMinesLeft()));
         field_=variables.setField();
         field=variables.emptyFILLS(field_);
-        System.out.println(field.length);
+        //System.out.println(field.length);
 
         //While func
 

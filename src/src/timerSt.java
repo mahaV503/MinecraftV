@@ -1,20 +1,21 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class timerSt {
-    private final long createdMillis = System.currentTimeMillis();
+   public static void save(Serializable arr, String name) throws Exception {
+        try (
+            ObjectOutputStream oos=new ObjectOutputStream(Files.newOutputStream(Paths.get(name)))){
+                oos.writeObject(arr);
+            }
+   }
 
-
-    public int stopTime(){
-        long nowMillis = System.currentTimeMillis();
-        int diffT=(int)((nowMillis - this.createdMillis) / 1000);
-        System.out.println(1000-diffT);
-        return diffT;
-
+   public static Object load (String name) throws Exception {
+       try (
+               ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(Paths.get(name)))) {
+           return ois.readObject();
+       } }
     }
-
-    public static void main(String[] args) throws InterruptedException {
-        timerSt t=new timerSt();
-        while(t.stopTime()<1000){
-            System.out.println(t.stopTime());
-            Thread.sleep(1000);
-        }
-    }
-}
