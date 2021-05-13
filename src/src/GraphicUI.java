@@ -11,11 +11,12 @@ public class GraphicUI extends JPanel{
     GraphicUIvar variables = new GraphicUIvar();
     private Image[] img;
     private int[] field_;
-    private int[] field;
+    public static int[] field;
     private final JLabel statusbar;
     private final JLabel timebar_;
     private long createdMillis;
     boolean exitTime=true;
+
     Thread t;
     int time=1000;
     public GraphicUI(JLabel statusbar,JLabel timebar_) {
@@ -294,6 +295,9 @@ public class GraphicUI extends JPanel{
                 }
 
                 if (doRepaint) {
+                    LMain.fieldData=field;
+                    LMain.minesData= variables.getMinesLeft();
+                    LMain.timeData =time-stopTime();
                     repaint();
                 }
             }

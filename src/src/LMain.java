@@ -12,6 +12,12 @@ import javax.swing.border.EmptyBorder;
 public class LMain extends JFrame {
 
     private JLabel statusbar;
+    public static int[] fieldData;
+    private int[] fieldRead;
+    public static int minesData;
+    public static int minesRead;
+    public static int timeData;
+    public static int timeRead;
     JLabel timebar;
     JMenu optionsmenu;
     JRadioButtonMenuItem[] options = new JRadioButtonMenuItem[4];
@@ -46,9 +52,20 @@ public class LMain extends JFrame {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
                 int result = fileChooser.showOpenDialog(parentFrame);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                if (result == JFileChooser.APPROVE_OPTION) {saveDds dataA=new saveDds();
+                    dataA.fieldMapArray=GraphicUI.field;
+                    File fileToOpen = fileChooser.getSelectedFile();
+
+                    try {
+                        saveDds readObj = (saveDds) timerSt.load(fileToOpen.getAbsolutePath());
+                        fieldRead= readObj.fieldMapArray;
+                        minesRead= readObj.timeDS;
+                        timeRead= readObj.mineDS;
+                        System.out.println(minesRead+": "+timeRead);
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                        System.err.println("Cannot Load the data");
+                    }
                 }
             }
         });
@@ -66,7 +83,18 @@ public class LMain extends JFrame {
                 int userSelection = fileChooser.showSaveDialog(parentFrame);
 
                 if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    saveDds dataA=new saveDds();
+                    dataA.fieldMapArray=fieldData;
+                    dataA.mineDS=minesData;
+                    dataA.timeDS=timeData;
                     File fileToSave = fileChooser.getSelectedFile();
+
+                    try {
+                        timerSt.save(dataA,fileToSave.getAbsolutePath());
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                        System.err.println("Unable to dave the file");
+                    }
                     System.out.println("Save as file: " + fileToSave.getAbsolutePath());
                 }
             }
