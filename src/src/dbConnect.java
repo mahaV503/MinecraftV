@@ -1,13 +1,14 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 public class dbConnect {
 
     private static Logger logger;
-    private static Connection getRemoteConnection() {
+    public static String dbFlag="";public static String pla;public static int min;public static int tim;public static int[] fie;
+    public static String plaLoad;
+    public static Connection getRemoteConnection() {
         System.out.println("cool");
             System.out.println("a");
             try {
@@ -22,6 +23,23 @@ public class dbConnect {
                 Connection con = DriverManager.getConnection(jdbcUrl);
                 System.out.println("Connection successful");
                 //logger.info("Remote connection successful.");
+                //(String pla,int min,int tim,int[] fie)
+                if(dbFlag.equals("save")) {
+                    String insertsql = MessageFormat.format("INSERT INTO minesweep (playername,mine,time,field)" + " values ({0},{1},{2},{3})", pla, min, tim, fie);
+                    Statement stmt=con.createStatement();
+                    stmt.executeUpdate(insertsql);
+
+                }else if(dbFlag.equals("load")){
+                    String loadsql=MessageFormat.format("select * from minesweep where playername={0}",plaLoad);
+                    Statement stmt=con.createStatement();
+                    ResultSet res= stmt.executeQuery(loadsql);
+                    while(res.next()){
+                        //pla=res.getString("playername");
+                        tim=res.getInt("time");
+                        min=res.getInt("mine");
+                        fie= (int[]) res.getObject ("field");
+                    }
+                }
                 return con;
             }
             catch (ClassNotFoundException e) { //logger.warn(e.toString());
@@ -36,7 +54,5 @@ public class dbConnect {
         return null;
     }
 
-    public static void main(String[] args){
-           getRemoteConnection();
-    }
+
 }

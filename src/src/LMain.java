@@ -75,12 +75,18 @@ public class LMain extends JFrame {
                 if (result == JFileChooser.APPROVE_OPTION) {saveDds dataA=new saveDds();
                     dataA.fieldMapArray=GraphicUI.field;
                     File fileToOpen = fileChooser.getSelectedFile();
+                    dbConnect.dbFlag="load";
+                    dbConnect.plaLoad=fileToOpen.getAbsolutePath();
 
                     try {
-                        saveDds readObj = (saveDds) timerSt.load(fileToOpen.getAbsolutePath());
-                        fieldRead= readObj.fieldMapArray;
-                        minesRead= readObj.mineDS;
-                        timeRead= readObj.timeDS;
+                        //saveDds readObj = (saveDds) timerSt.load(fileToOpen.getAbsolutePath());
+                        //fieldRead= readObj.fieldMapArray;
+                        //minesRead= readObj.mineDS;
+                        //timeRead= readObj.timeDS;
+                        new dbConnect();
+                        fieldRead=dbConnect.fie;
+                        timeRead=dbConnect.tim;
+                        minesRead=dbConnect.min;
                         System.out.println(minesRead+": "+timeRead);
                         dispose();
                         var ex = new LMain();
@@ -109,13 +115,19 @@ public class LMain extends JFrame {
 
                 if (userSelection == JFileChooser.APPROVE_OPTION) {
                     saveDds dataA=new saveDds();
-                    dataA.fieldMapArray=fieldData;
-                    dataA.mineDS=minesData;
-                    dataA.timeDS=timeData;
+                    //dataA.fieldMapArray=fieldData;
+                    //dataA.mineDS=minesData;
+                    //dataA.timeDS=timeData;
                     File fileToSave = fileChooser.getSelectedFile();
-
+                    dbConnect.fie=fieldData;
+                    dbConnect.min=minesData;
+                    dbConnect.tim=timeData;
+                    dbConnect.pla=fileToSave.getAbsolutePath();
                     try {
-                        timerSt.save(dataA,fileToSave.getAbsolutePath());
+                        //timerSt.save(dataA,fileToSave.getAbsolutePath());
+                        dbConnect.dbFlag="save";
+                        dbConnect a= new dbConnect();
+                        a.getRemoteConnection();
                     } catch (Exception exception) {
                         exception.printStackTrace();
                         System.err.println("Unable to dave the file");
