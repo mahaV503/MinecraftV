@@ -13,11 +13,12 @@ public class LMain extends JFrame {
 
     private JLabel statusbar;
     public static int[] fieldData;
-    private int[] fieldRead;
+    public static int[] fieldRead;
     public static int minesData;
     public static int minesRead;
     public static int timeData;
     public static int timeRead;
+    public String flag;
     JLabel timebar;
     JMenu optionsmenu;
     JRadioButtonMenuItem[] options = new JRadioButtonMenuItem[4];
@@ -27,14 +28,23 @@ public class LMain extends JFrame {
         initUI();
     }
 
+
     private void initUI() {
         statusbar = new JLabel("");
         timebar = new JLabel("Time Remaining");
         add(statusbar, BorderLayout.SOUTH);
         add(timebar, BorderLayout.NORTH);
-
-        add(new GraphicUI(statusbar,timebar));
-
+        if(flag==null) {
+            System.out.println("loading ..");
+            add(new GraphicUI(statusbar, timebar));
+        }else if(flag.equals("save")){
+            GraphicUI.flagG="save";
+            System.out.println("saving ..");
+            add(new GraphicUI(statusbar, timebar));
+        }else if(flag.equals("load")){
+            GraphicUI.flagG="load";
+            add(new GraphicUI(statusbar, timebar));
+        }
 
         setResizable(false);
         menubar = new JMenuBar();
@@ -54,7 +64,10 @@ public class LMain extends JFrame {
         options[1].setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         options[1].addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
+                flag="load";
+                GraphicUI.flagG="load";
                 JFrame parentFrame = new JFrame();
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -66,9 +79,13 @@ public class LMain extends JFrame {
                     try {
                         saveDds readObj = (saveDds) timerSt.load(fileToOpen.getAbsolutePath());
                         fieldRead= readObj.fieldMapArray;
-                        minesRead= readObj.timeDS;
-                        timeRead= readObj.mineDS;
+                        minesRead= readObj.mineDS;
+                        timeRead= readObj.timeDS;
                         System.out.println(minesRead+": "+timeRead);
+                        dispose();
+                        var ex = new LMain();
+
+                        ex.setVisible(true);
                     } catch (Exception exception) {
                         exception.printStackTrace();
                         System.err.println("Cannot Load the data");
@@ -82,6 +99,7 @@ public class LMain extends JFrame {
 
         options[2].addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                flag="save";
                 JFrame parentFrame = new JFrame();
 
                 JFileChooser fileChooser = new JFileChooser();

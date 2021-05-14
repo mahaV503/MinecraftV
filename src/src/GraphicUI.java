@@ -10,6 +10,7 @@ public class GraphicUI extends JPanel{
 
     GraphicUIvar variables = new GraphicUIvar();
     private Image[] img;
+    private int diffT;
     private int[] field_;
     public static int[] field;
     private final JLabel statusbar;
@@ -19,6 +20,7 @@ public class GraphicUI extends JPanel{
 
     Thread t;
     int time=1000;
+    public static String flagG="";
     public GraphicUI(JLabel statusbar,JLabel timebar_) {
 
         this.statusbar = statusbar;
@@ -39,9 +41,14 @@ public class GraphicUI extends JPanel{
 
 
 
-    public int stopTime(){
-        long nowMillis = System.currentTimeMillis();
-        int diffT=(int)((nowMillis - this.createdMillis) / 1000);
+    public int stopTime(String ab){
+        if(ab.equals("load")){
+            diffT=(int)((LMain.timeRead - this.createdMillis) / 1000);}
+        else {
+
+                long nowMillis = System.currentTimeMillis();
+                diffT=(int)((nowMillis - this.createdMillis) / 1000);
+        }
         //System.out.println(1000-diffT);
         return diffT;
 
@@ -52,8 +59,8 @@ public class GraphicUI extends JPanel{
         t = new Thread() {
             public void run() {
 
-                while(stopTime()<time && exitTime){
-                    timebar_.setText("Time Remaining: "+(time-stopTime()));
+                while(stopTime(flagG)<time && exitTime){
+                    timebar_.setText("Time Remaining: "+(time-stopTime(flagG)));
                     //System.out.println(stopTime());
                     try {
                         Thread.sleep(1000);
@@ -65,16 +72,24 @@ public class GraphicUI extends JPanel{
         };
         t.start();
         //System.out.println(createdMillis);
+        if (flagG.equals("load")){
+            variables.setInGame(true);
+            variables.setMinesLeft(LMain.minesRead);
+            variables.setAllCells(variables.getN_COLS()*variables.getN_COLS());
+            variables.setField();
+            statusbar.setText(Integer.toString(LMain.minesRead));
 
-        variables.setInGame(true);
-        variables.setMinesLeft(variables.getN_MINES());
-        variables.setAllCells(variables.getN_COLS()*variables.getN_COLS());
-        variables.setField();
-        statusbar.setText(Integer.toString(variables.getMinesLeft()));
-        field_=variables.setField();
-        field=variables.emptyFILLS(field_);
-        //System.out.println(field.length);
-
+            field=LMain.fieldRead;
+        }else {
+            variables.setInGame(true);
+            variables.setMinesLeft(variables.getN_MINES());
+            variables.setAllCells(variables.getN_COLS() * variables.getN_COLS());
+            variables.setField();
+            statusbar.setText(Integer.toString(variables.getMinesLeft()));
+            field_ = variables.setField();
+            field = variables.emptyFILLS(field_);
+            //System.out.println(field.length);
+        }
         //While func
 
     }
@@ -297,7 +312,7 @@ public class GraphicUI extends JPanel{
                 if (doRepaint) {
                     LMain.fieldData=field;
                     LMain.minesData= variables.getMinesLeft();
-                    LMain.timeData =time-stopTime();
+                    LMain.timeData =time-stopTime(flagG);
                     repaint();
                 }
             }
