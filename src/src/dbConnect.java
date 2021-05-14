@@ -1,7 +1,9 @@
 import java.sql.*;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class dbConnect {
 
@@ -29,7 +31,7 @@ public class dbConnect {
                 //logger.info("Remote connection successful.");
                 //(String pla,int min,int tim,int[] fie)
                 if(dbFlag.equals("save")) {
-                    Array arrayUSA = con.createArrayOf("int", new int[][]{fie});
+                    Array arrayUSA = con.createArrayOf("INTEGER", new int[][]{fie});
                     String sql = "INSERT INTO minesweep VALUES (?, ?,?,?)";
                     PreparedStatement pstmt = con.prepareStatement(sql);
 
@@ -39,16 +41,24 @@ public class dbConnect {
                     pstmt.setArray(4, arrayUSA);
                     pstmt.executeUpdate();
                 }else if(dbFlag.equals("load")){
-                    String loadsql=MessageFormat.format("select * from minesweep where playername={0}",plaLoad);
+
+                    //String loadsql=MessageFormat.format("select * from minesweep where playername='{0}'",plaLoad);
+                    String loadsql="select * from minesweep where playername='"+plaLoad+"'";
                     Statement stmt=con.createStatement();
                     ResultSet res= stmt.executeQuery(loadsql);
-                    while(res.next()){
+
+                    if(res.next()) {
                         //pla=res.getString("playername");
-                        tim=res.getInt("time");
-                        min=res.getInt("mine");
-                        //fie= res.getNString("fie");
+                        tim = res.getInt("time");
+                        min = res.getInt("mine");
+                        Array tempfie = res.getArray("field");
+                        System.out.println(tempfie.toString());
+                        fie=theCorrector(tempfie.toString());
+                        //fie = (int[]) tempfie.getArray();
                     }
+
                 }
+
                 return con;
             }
             catch (ClassNotFoundException e) { //logger.warn(e.toString());
@@ -61,6 +71,14 @@ public class dbConnect {
                  }
 
         return null;
+    }
+
+    private static int[] theCorrector(String toString) {
+        toString=toString.substring(2,toString.length()-2);
+        int [] v = Stream.of(toString.split(","))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        return v;
     }
 
 

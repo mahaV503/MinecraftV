@@ -70,22 +70,21 @@ public class LMain extends JFrame {
                 flag="load";
                 GraphicUI.flagG="load";
                 JFrame parentFrame = new JFrame();
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                int result = fileChooser.showOpenDialog(parentFrame);
-                if (result == JFileChooser.APPROVE_OPTION) {saveDds dataA=new saveDds();
-                    dataA.fieldMapArray=GraphicUI.field;
-                    File fileToOpen = fileChooser.getSelectedFile();
+
+                String name=JOptionPane.showInputDialog(parentFrame,"Enter Name");
+                 if (name != null) {
                     dbConnect.dbFlag="load";
-                    dbConnect.plaLoad=fileToOpen.getAbsolutePath();
+                    dbConnect.plaLoad=name;
 
                     try {
                         //saveDds readObj = (saveDds) timerSt.load(fileToOpen.getAbsolutePath());
                         //fieldRead= readObj.fieldMapArray;
                         //minesRead= readObj.mineDS;
                         //timeRead= readObj.timeDS;
-                        new dbConnect();
-                        //fieldRead=dbConnect.fie;
+
+                        dbConnect ab= new dbConnect();
+                        ab.getRemoteConnection();
+                        fieldRead=dbConnect.fie;
                         System.out.println(dbConnect.fie);
                         timeRead=dbConnect.tim;
                         minesRead=dbConnect.min;
