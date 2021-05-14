@@ -6,7 +6,11 @@ import java.util.logging.Logger;
 public class dbConnect {
 
     private static Logger logger;
-    public static String dbFlag="";public static String pla;public static int min;public static int tim;public static int[] fie;
+    public static String dbFlag="";
+    public static String pla;
+    public static int min;
+    public static int tim;
+    public static int[] fie;
     public static String plaLoad;
     public static Connection getRemoteConnection() {
         System.out.println("cool");
@@ -25,10 +29,15 @@ public class dbConnect {
                 //logger.info("Remote connection successful.");
                 //(String pla,int min,int tim,int[] fie)
                 if(dbFlag.equals("save")) {
-                    String insertsql = MessageFormat.format("INSERT INTO minesweep (playername,mine,time,field)" + " values ({0},{1},{2},{3})", pla, min, tim, fie);
-                    Statement stmt=con.createStatement();
-                    stmt.executeUpdate(insertsql);
+                    Array arrayUSA = con.createArrayOf("int", new int[][]{fie});
+                    String sql = "INSERT INTO minesweep VALUES (?, ?,?,?)";
+                    PreparedStatement pstmt = con.prepareStatement(sql);
 
+                    pstmt.setString(1, pla);
+                    pstmt.setInt(2,min);
+                    pstmt.setInt(3,tim);
+                    pstmt.setArray(4, arrayUSA);
+                    pstmt.executeUpdate();
                 }else if(dbFlag.equals("load")){
                     String loadsql=MessageFormat.format("select * from minesweep where playername={0}",plaLoad);
                     Statement stmt=con.createStatement();
@@ -37,7 +46,7 @@ public class dbConnect {
                         //pla=res.getString("playername");
                         tim=res.getInt("time");
                         min=res.getInt("mine");
-                        fie= (int[]) res.getObject ("field");
+                        //fie= res.getNString("fie");
                     }
                 }
                 return con;

@@ -2,6 +2,7 @@
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -313,6 +314,7 @@ public class GraphicUI extends JPanel{
 
                 if (doRepaint) {
                     LMain.fieldData=field;
+                    System.out.println(Arrays.toString(field));
                     LMain.minesData= variables.getMinesLeft();
                     LMain.timeData =time-stopTime();
                     repaint();

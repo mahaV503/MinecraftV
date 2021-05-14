@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -84,7 +85,8 @@ public class LMain extends JFrame {
                         //minesRead= readObj.mineDS;
                         //timeRead= readObj.timeDS;
                         new dbConnect();
-                        fieldRead=dbConnect.fie;
+                        //fieldRead=dbConnect.fie;
+                        System.out.println(dbConnect.fie);
                         timeRead=dbConnect.tim;
                         minesRead=dbConnect.min;
                         System.out.println(minesRead+": "+timeRead);
@@ -108,21 +110,20 @@ public class LMain extends JFrame {
                 flag="save";
                 JFrame parentFrame = new JFrame();
 
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("Specify a file to save");
+                String name=JOptionPane.showInputDialog(parentFrame,"Enter Name");
 
-                int userSelection = fileChooser.showSaveDialog(parentFrame);
-
-                if (userSelection == JFileChooser.APPROVE_OPTION) {
-                    saveDds dataA=new saveDds();
+                if (name != null) {
+                    //saveDds dataA=new saveDds();
                     //dataA.fieldMapArray=fieldData;
                     //dataA.mineDS=minesData;
                     //dataA.timeDS=timeData;
-                    File fileToSave = fileChooser.getSelectedFile();
-                    dbConnect.fie=fieldData;
+                    //String fileToSave = name;
+                    dbConnect.fie= fieldData;
+                    System.out.println(dbConnect.fie);
                     dbConnect.min=minesData;
                     dbConnect.tim=timeData;
-                    dbConnect.pla=fileToSave.getAbsolutePath();
+                    System.out.println(name);
+                    dbConnect.pla=name;
                     try {
                         //timerSt.save(dataA,fileToSave.getAbsolutePath());
                         dbConnect.dbFlag="save";
@@ -132,7 +133,7 @@ public class LMain extends JFrame {
                         exception.printStackTrace();
                         System.err.println("Unable to dave the file");
                     }
-                    System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                    System.out.println("Save as file: " +name);
                 }
             }
         });
