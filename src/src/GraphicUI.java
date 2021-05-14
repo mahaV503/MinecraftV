@@ -41,14 +41,13 @@ public class GraphicUI extends JPanel{
 
 
 
-    public int stopTime(String ab){
-        if(ab.equals("load")){
-            diffT=(int)((LMain.timeRead - this.createdMillis) / 1000);}
-        else {
+    public int stopTime(){
+
 
                 long nowMillis = System.currentTimeMillis();
                 diffT=(int)((nowMillis - this.createdMillis) / 1000);
-        }
+                System.out.println(nowMillis+": "+this.createdMillis);
+
         //System.out.println(1000-diffT);
         return diffT;
 
@@ -56,11 +55,14 @@ public class GraphicUI extends JPanel{
 
     private void newGame() {
         createdMillis = System.currentTimeMillis();
+        if(flagG.equals("load")){
+            time=LMain.timeRead;
+        }
         t = new Thread() {
             public void run() {
 
-                while(stopTime(flagG)<time && exitTime){
-                    timebar_.setText("Time Remaining: "+(time-stopTime(flagG)));
+                while(stopTime()<time && exitTime){
+                    timebar_.setText("Time Remaining: "+(time-stopTime()));
                     //System.out.println(stopTime());
                     try {
                         Thread.sleep(1000);
@@ -312,7 +314,7 @@ public class GraphicUI extends JPanel{
                 if (doRepaint) {
                     LMain.fieldData=field;
                     LMain.minesData= variables.getMinesLeft();
-                    LMain.timeData =time-stopTime(flagG);
+                    LMain.timeData =time-stopTime();
                     repaint();
                 }
             }
