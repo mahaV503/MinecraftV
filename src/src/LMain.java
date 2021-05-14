@@ -42,7 +42,14 @@ public class LMain extends JFrame {
         options[0] = new JRadioButtonMenuItem("New", false);options[0].setMnemonic(KeyEvent.VK_N);
         options[0].setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        options[0].addActionListener(ev -> add(new GraphicUI(statusbar,timebar)));
+        options[0].addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                dispose();
+                var ex = new LMain();
+
+                ex.setVisible(true);
+            }
+        });
         options[1] = new JRadioButtonMenuItem("Open", false);options[1].setMnemonic(KeyEvent.VK_O);
         options[1].setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_O, ActionEvent.CTRL_MASK));
