@@ -37,14 +37,14 @@ public class LMain extends JFrame {
         add(timebar, BorderLayout.NORTH);
         if(flag==null) {
             System.out.println("loading ..");
-            add(new GraphicUI(statusbar, timebar));
+            add(new Base(statusbar, timebar));
         }else if(flag.equals("save")){
-            GraphicUI.flagG="save";
+            Base.flagG="save";
             System.out.println("saving ..");
-            add(new GraphicUI(statusbar, timebar));
+            add(new Base(statusbar, timebar));
         }else if(flag.equals("load")){
-            GraphicUI.flagG="load";
-            add(new GraphicUI(statusbar, timebar));
+            Base.flagG="load";
+            add(new Base(statusbar, timebar));
         }
 
         setResizable(false);
@@ -54,7 +54,10 @@ public class LMain extends JFrame {
         options[0].setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         options[0].addActionListener(new ActionListener(){
+
             public void actionPerformed(ActionEvent e){
+                flag="";
+                Base.flagG="";
                 dispose();
                 var ex = new LMain();
 
@@ -68,7 +71,7 @@ public class LMain extends JFrame {
 
             public void actionPerformed(ActionEvent e) {
                 flag="load";
-                GraphicUI.flagG="load";
+                Base.flagG="load";
                 JFrame parentFrame = new JFrame();
 
                 String name=JOptionPane.showInputDialog(parentFrame,"Enter Name");
