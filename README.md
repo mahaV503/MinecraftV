@@ -2,8 +2,8 @@
 Minecraft built using Java, 
 
 Functionalities:
--> Mine marking customizable 
--> can load and save game (in cloud).
--> Timer
--> connected to AWS DB.
--> will return top scorers.
+-> Mine marking customizable <br>
+-> can load and save game (in cloud). <br>
+-> Timer <br>
+-> connected to AWS DB.  <br>
+-> will return top scorers.  <br>
